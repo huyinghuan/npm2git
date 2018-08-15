@@ -5,7 +5,7 @@ if [ "$1" == "" ];then
     echo "版本号不能为空"
     exit 1
 else
-    version=mb_$1
+    version=$1_mb
 fi
 commit=""
 if [ $# ] && [ "$2" == "-m" ] && [ "$3" != "" ];then

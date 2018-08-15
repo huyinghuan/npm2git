@@ -1,6 +1,6 @@
 {
   "name": "mb",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "mgtv mobile build tools",
   "bin": "build.sh",
   "scripts": {},
