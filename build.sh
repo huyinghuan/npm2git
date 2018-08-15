@@ -4,6 +4,8 @@ version=$1
 if [ "$1" == "" ];then
     echo "版本号不能为空"
     exit 1
+else
+    version=mb_$1
 fi
 commit=""
 if [ $# ] && [ "$2" == "-m" ] && [ "$3" != "" ];then
@@ -22,20 +24,18 @@ echo project: $projectName
 echo current branch: $currentBranchName
 npm run build
 git checkout -b $tempBranchName
-echo -e "node_modules" > .gitignore
+echo -e "node_modules\n.*" > .gitignore
 for entry in "$PWD"/*
 do
   if [ "$entry" != "$PWD/build" ] && [ "$entry" != "$PWD/node_modules" ] && [ "$entry" != "$PWD/.gitignore" ]; then
     rm -rf "$entry"
   fi
 done
-
-for buildFile in "$PWD"/build/*
-do
-  filename=${buildFile##*/}
-  cp -r "$buildFile" "$PWD/$filename"
+for f in .[^.]*; do
+    if [ "$f" != ".git" ] && [ "$f" != ".gitignore" ];then
+        rm -rf "$f"
+    fi
 done
-rm -rf build
 git add .
 git commit -m "$commit"
 git tag "$version" -m "$commit"
