@@ -36,7 +36,12 @@ else
     VERSION=${VERSION}_mb
 fi
 
-if [ "${COMMIT}" == "" ];then
+if git rev-parse -q --verify "refs/tags/$VERSION" >/dev/null; then
+    echo "版本号已存在，请使用其他版本号"
+    exit 1
+fi
+
+if [ "$COMMIT" == "" ];then
     COMMIT="tag verion to ${VERSION}"
 fi
 
@@ -44,10 +49,19 @@ if [ "$OUTPUT" == "" ];then
     OUTPUT="dist"
 fi
 
-
 projectName=${PWD##*/}
 tempBranchName=build_${projectName}_${VERSION}
 currentBranchName=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
+
+#临时分支存在时 删除临时分支
+if [ `git branch --list $tempBranchName` ]; then
+    if [ "$currentBranchName" == "$tempBranchName" ]; then
+        git reset --hard HEAD
+        git checkout master
+        echo 当前切换到主分支 master, 如果 master 不是当前开发分支， 请手动切换到开发分支，
+    fi
+    git branch -D $tempBranchName
+fi
 
 echo workspace: $PWD
 echo project: $projectName
