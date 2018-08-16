@@ -90,4 +90,6 @@ git checkout $currentBranchName
 git checkout .gitignore
 git branch -D $tempBranchName
 git push --tags
-echo tag to $VERSION finish
+echo ================
+echo Tag $VERSION to server finish
+echo ================
