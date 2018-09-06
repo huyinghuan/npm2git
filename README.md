@@ -17,6 +17,10 @@ mb 会自动创建一个 `mb_xxx`到tag，并且`push`到远程服务器
 
 ## Histroy
 
+### 1.0.6
+
+增加 package.json
+
 ### 1.0.5
  - 增加tag，branch判断
  - 增加参数设置， 

@@ -50,7 +50,7 @@ if [ "$OUTPUT" == "" ];then
 fi
 
 projectName=${PWD##*/}
-tempBranchName=build_${projectName}_${VERSION}
+tempBranchName=tmp_build_${projectName}_${VERSION}
 currentBranchName=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
 
 #临时分支存在时 删除临时分支
@@ -74,10 +74,11 @@ git checkout -b $tempBranchName
 echo -e "node_modules\n.*" > .gitignore
 for entry in "$PWD"/*
 do
-  if [ "$entry" != "$PWD/$OUTPUT" ] && [ "$entry" != "$PWD/node_modules" ] && [ "$entry" != "$PWD/.gitignore" ]; then
+  if [ "$entry" != "$PWD/$OUTPUT" ] && [ "$entry" != "$PWD/node_modules" ] && [ "$entry" != "$PWD/.gitignore" ] && [ "$entry" != "$PWD/package.json" ]; then
     rm -rf "$entry"
   fi
 done
+#删除隐藏文件
 for f in .[^.]*; do
     if [ "$f" != ".git" ] && [ "$f" != ".gitignore" ];then
         rm -rf "$f"
